@@ -1,0 +1,169 @@
+{% extends 'base.html' %} {% block title %}Dashboard - ABC Bank{% endblock %}
+{%load static %} {% block extra_head %}
+<style>
+  .container {
+    padding: 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Summary Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+  }
+
+  .cards .card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+  }
+
+  .cards .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .cards .card h2 {
+    font-size: 36px;
+    color: #0059b3;
+    margin-bottom: 10px;
+  }
+
+  .cards .card p {
+    font-size: 16px;
+    color: #333;
+  }
+
+  /* Customer Table */
+  h2 {
+    color: #003366;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  thead {
+    background: #0059b3;
+    color: white;
+  }
+
+  th,
+  td {
+    padding: 15px 20px;
+    text-align: left;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f5f7fb;
+  }
+
+  tbody tr:hover {
+    background: #e6f0ff;
+  }
+
+  /* Action Button */
+  .action-btn {
+    background-color: #0073e6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+  }
+
+  .action-btn:hover {
+    background-color: #0059b3;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .container {
+      padding: 20px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+    }
+
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <!-- Summary Cards -->
+  <div class="cards">
+    <div class="card">
+      <h2>{{ total_customers }}</h2>
+      <p>Total Customers</p>
+    </div>
+    <div class="card">
+      <h2>{{ total_branches }}</h2>
+      <p>Total Branches</p>
+    </div>
+  </div>
+
+  <!-- Customer List -->
+  <h2>Customer List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Branch</th>
+        <th>Balance</th>
+        <th>Message</th>
+        <th>Actions</th>
+        <th>Responsive</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in customers %}
+      <tr>
+        <td>{{ customer.user.username }}</td>
+        <td>{{ customer.user.email }}</td>
+        <td>{{ customer.branch.name }}</td>
+        <td>${{ customer.bal }}</td>
+        <td>{{customer.Message}}</td>
+        <td>
+          <a href="{% url 'update_bal' customer.user.id%}" class="action-btn"
+            >Update Balance</a
+          >
+        </td>
+        <td>
+          {% if customer.Response %}
+          <!-- Already replied -->
+          <img
+            src="{% static 'tick.jpg' %}"
+            alt="Replied"
+            width="22"
+            title="Replied"
+          />
+          {% else %}
+          <!-- No reply yet -->
+          <a href="{% url 'response' customer.user.id %}" class="action-btn"
+            >Replay</a
+          >
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

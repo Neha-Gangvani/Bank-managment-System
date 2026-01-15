@@ -1,0 +1,195 @@
+{% extends 'base.html' %} {% load humanize %} {% block content %}
+
+<section class="services">
+  <h2>Home Loan Calculator</h2>
+
+  <div class="calculator-box">
+    <!-- Loan Amount -->
+    <div class="calc-field">
+      <label for="amount">Loan Amount (₹)</label>
+      <input
+        type="range"
+        id="amount"
+        min="1000"
+        max="1000000"
+        step="1000"
+        value="{{ principal }}"
+      />
+      <p>₹<span id="amount-val">{{ principal|intcomma }}</span></p>
+    </div>
+
+    <!-- Interest Rate -->
+    <div class="calc-field">
+      <label for="interest">Interest Rate (%)</label>
+      <input
+        type="range"
+        id="interest"
+        min="1"
+        max="20"
+        step="0.1"
+        value="{{ interest }}"
+      />
+      <p><span id="interest-val">{{ interest }}</span>%</p>
+    </div>
+
+    <!-- Loan Tenure -->
+    <div class="calc-field">
+      <label for="years">Loan Tenure (Years)</label>
+      <input
+        type="range"
+        id="years"
+        min="1"
+        max="30"
+        step="1"
+        value="{{ years }}"
+      />
+      <p><span id="years-val">{{ years }}</span> years</p>
+    </div>
+
+    <div class="totals">
+      <h3>
+        Total Interest: ₹<span id="total-interest"
+          >{{ total_interest|intcomma }}</span
+        >
+      </h3>
+      <h3>
+        Total Payment: ₹<span id="total-payment"
+          >{{ total_payment|intcomma }}</span
+        >
+      </h3>
+    </div>
+  </div>
+</section>
+
+<script>
+  function updateValues() {
+    const amount = document.getElementById("amount").value;
+    const interest = document.getElementById("interest").value;
+    const years = document.getElementById("years").value;
+
+    document.getElementById("amount-val").innerText =
+      parseInt(amount).toLocaleString();
+    document.getElementById("interest-val").innerText = interest;
+    document.getElementById("years-val").innerText = years;
+
+    fetch(`?amount=${amount}&interest=${interest}&years=${years}`, {
+      headers: { "x-requested-with": "XMLHttpRequest" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        document.getElementById("total-interest").innerText = parseInt(
+          data.total_interest
+        ).toLocaleString();
+        document.getElementById("total-payment").innerText = parseInt(
+          data.total_payment
+        ).toLocaleString();
+      });
+  }
+
+  // Attach event listeners
+  ["amount", "interest", "years"].forEach((id) => {
+    document.getElementById(id).addEventListener("input", updateValues);
+  });
+</script>
+
+<style>
+  /* General layout */
+  .calculator-box {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Headings */
+  h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .calc-field {
+    margin-bottom: 25px;
+  }
+
+  .calc-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+  }
+
+  .calc-field p {
+    margin-top: 5px;
+    font-size: 1.1em;
+    color: #333;
+  }
+
+  /* Slider style */
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    background: #ddd;
+    outline: none;
+    transition: background 0.3s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #2a49afff;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: #2a49afff;
+    transform: scale(1.2);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #2a49afff;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  /* Totals */
+  .totals h3 {
+    font-size: 1.3em;
+    margin-top: 15px;
+    text-align: center;
+    color: #222;
+  }
+
+  .totals h3 span {
+    font-weight: 700;
+    color: #2a49afff;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .calculator-box {
+      padding: 20px 15px;
+    }
+    h2 {
+      font-size: 1.5em;
+    }
+    .totals h3 {
+      font-size: 1.1em;
+    }
+  }
+</style>
+
+{% endblock %}

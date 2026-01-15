@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Manager- ABC Bank{% endblock %}
+
+{% block extra_head %}
+<style>
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #003366;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    form label {
+        display: block;
+        margin: 15px 0 5px;
+        font-weight: 500;
+        color: #0059b3;
+    }
+
+    form input, form select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    form button {
+        background-color: #0073e6;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    form button:hover {
+        background-color: #0059b3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Response</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Manager</label>
+        <input type="text" value="{{ customer.user.username }}" disabled>
+
+        <label>Branch</label>
+        <input type="text" value="{{ customer.branch.name }}" disabled>
+
+        <label>Message</label>
+        <input type="text" name="msg" value="{{ customer.Message }}" disabled>
+
+        <label>Response</label>
+        <input type="text" name="res" value="{{ customer.Response }}" required>
+
+        <button type="submit">Send Response</button>
+    </form>
+</div>
+{% endblock %}

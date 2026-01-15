@@ -1,0 +1,119 @@
+{% extends "base.html" %} {% block title %}Profile - ABC Bank{% endblock %}
+{%block content %}
+<div
+  class="profile-container"
+  style="
+    max-width: 600px;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  "
+>
+  <h2 style="margin-bottom: 20px; text-align: center">Your Profile</h2>
+
+  <!-- Form for updating profile -->
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Profile Picture -->
+    <div style="margin-bottom: 20px; text-align: center">
+      {% if user.bank_register.profile_picture %}
+      <img
+        src="{{ user.bank_register.profile_picture.url }}"
+        alt="Profile Picture"
+        style="
+          width: 120px;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 50%;
+          margin-bottom: 10px;
+        "
+      />
+      {% else %}
+      <div
+        style="
+          width: 120px;
+          height: 120px;
+          background-color: #eee;
+          border-radius: 50%;
+          margin: 0 auto 10px;
+        "
+      ></div>
+      {% endif %}
+      <input
+        type="file"
+        name="profile_picture"
+        style="display: block; margin: 0 auto; padding: 5px"
+      />
+      {% if register_form.profile_picture.errors %}
+      <div style="color: red; margin-top: 5px">
+        {{ register_form.profile_picture.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Username -->
+    <div style="margin-bottom: 15px">
+      <input
+        type="text"
+        name="{{ user_form.username.name }}"
+        value="{{ user_form.username.value }}"
+        placeholder="Username"
+        required
+        style="
+          width: 100%;
+          padding: 10px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+        "
+      />
+      {% if user_form.username.errors %}
+      <div style="color: red; margin-top: 5px">
+        {{ user_form.username.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Email -->
+    <div style="margin-bottom: 20px">
+      <input
+        type="email"
+        name="{{ user_form.email.name }}"
+        value="{{ user_form.email.value }}"
+        placeholder="Email"
+        required
+        style="
+          width: 100%;
+          padding: 10px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+        "
+      />
+      {% if user_form.email.errors %}
+      <div style="color: red; margin-top: 5px">
+        {{ user_form.email.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      style="
+        width: 100%;
+        background-color: #0059b3;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      "
+    >
+      Save Changes
+    </button>
+  </form>
+</div>
+{% endblock %}

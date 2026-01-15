@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <style>
+      /* Body */
+      body {
+        font-family: "Roboto", sans-serif;
+        background: linear-gradient(135deg, #1a75ff, #66ccff);
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Form Container */
+      form {
+        background-color: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #1a75ff;
+        margin-bottom: 30px;
+      }
+
+      /* Labels and Inputs */
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px 12px; /* taller input */
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: 0.3s;
+        box-sizing: border-box;
+      }
+
+      input:focus {
+        border-color: #1a75ff;
+        outline: none;
+        box-shadow: 0 0 8px rgba(26, 117, 255, 0.3);
+      }
+
+      /* Submit Button */
+      button {
+        width: 100%;
+        padding: 15px;
+        background-color: #1a75ff;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background-color: #0059b3;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        form {
+          padding: 30px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <form method="POST">
+      {% csrf_token %}
+      <h2>Log In</h2>
+
+      <p>
+        {{ form.username.label }}<br />
+        {{ form.username }}
+      </p>
+
+      <p>
+        {{ form.password.label }}<br />
+        {{ form.password }}
+      </p>
+
+      <button type="submit">Register</button>
+    </form>
+  </body>
+</html>
