@@ -83,7 +83,7 @@
     display: inline-block;
     margin: 15px 10px 0 10px;
     padding: 12px 25px;
-    background-color: #e67e22;
+    background-color: #5974fd;
     color: #fff;
     font-weight: bold;
     border-radius: 8px;
@@ -93,7 +93,7 @@
   }
 
   .contact-btn:hover {
-    background-color: #d35400;
+    background-color: #5974fd;
   }
 
   /* QR CODE STYLES */
@@ -147,7 +147,12 @@
 </style>
 
 <h1>Customer Dashboard</h1>
-
+<a
+  href="{% url 'request_disable_account' %}"
+  class="contact-btn"
+  style="margin-left: 1100px"
+  >Disable Account</a
+>
 <div class="cards-container">
   <div class="card">
     <h3>Balance</h3>

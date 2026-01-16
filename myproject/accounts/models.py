@@ -20,6 +20,7 @@ class Profile(models.Model):
     bal = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     Message=models.CharField(max_length=500,blank=True)
     Response=models.CharField(max_length=500,blank=True)
+    disable_request=models.CharField(max_length=500,blank=True,default='no requests')
     def __str__(self):
         return f"{self.user.username} Profile"
 

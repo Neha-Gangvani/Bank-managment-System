@@ -128,6 +128,8 @@
         <th>Branch</th>
         <th>Balance</th>
         <th>Message</th>
+        <th>Request</th>
+        <th>Approve Request</th>
         <th>Actions</th>
         <th>Responsive</th>
       </tr>
@@ -139,15 +141,22 @@
         <td>{{ customer.user.email }}</td>
         <td>{{ customer.branch.name }}</td>
         <td>${{ customer.bal }}</td>
-        <td>{{customer.Message}}</td>
+        <td>{{ customer.Message }}</td>
+        <td>{{ customer.disable_request }}</td>
         <td>
-          <a href="{% url 'update_bal' customer.user.id%}" class="action-btn"
+          <a
+            href="{% url 'approve_disable_request' customer.id %}"
+            class="action-btn"
+            >Approve</a
+          >
+        </td>
+        <td>
+          <a href="{% url 'update_bal' customer.user.id %}" class="action-btn"
             >Update Balance</a
           >
         </td>
         <td>
           {% if customer.Response %}
-          <!-- Already replied -->
           <img
             src="{% static 'tick.jpg' %}"
             alt="Replied"
@@ -155,14 +164,13 @@
             title="Replied"
           />
           {% else %}
-          <!-- No reply yet -->
           <a href="{% url 'response' customer.user.id %}" class="action-btn"
-            >Replay</a
+            >Reply</a
           >
           {% endif %}
         </td>
-        {% endfor %}
       </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>

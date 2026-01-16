@@ -67,17 +67,33 @@ def manager_dashboard(request):
     total_branches = Branch.objects.count()
     customers = Profile.objects.filter(role='customer',branch=manager_branch).select_related('user', 'branch')
     msg = request.user.accounts_profile.Message
+    req=request.user.accounts_profile.disable_request
+    disable_requests = Profile.objects.filter(disable_request="disable account")
+
     context = {
 
         'total_customers': total_customers,
         'total_branches': total_branches,
         'customers': customers,
         'message': msg,
+        'request':req,
+        'disable_requests':disable_requests,
     }
     return render(request, 'manager/dashboard.html', context)
 
 #this method used for update the balance of user
 
+@login_required
+def approve_disable_request(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
+    user = profile.user
+
+    if profile.disable_request== "disable account":
+        user.delete()
+        
+    else:
+       return redirect('manager_dashboard')
+    return redirect('index')
 
 #it is used for give the response to the customer
 @login_required

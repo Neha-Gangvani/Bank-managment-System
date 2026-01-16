@@ -145,8 +145,13 @@ def contact(request):
     }
     return render(request, 'customer/contact.html', context)
 
-
-
+@login_required
+def disable_req(request):
+     customer_profile = request.user.accounts_profile
+     if customer_profile.disable_request != "disable account":
+        customer_profile.disable_request = "disable account"
+        customer_profile.save()
+     return redirect('index')
 
 
 

@@ -8,4 +8,5 @@ urlpatterns = [
     path('loan/',views.loan_calculator,name='loan'),
      path('customer/',views.customer_dashboard,name='customer_dashboard'),
      path('contact/',views.contact,name='contact'),
+     path('request-disable/', views.disable_req, name='request_disable_account'),
 ]
